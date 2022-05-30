@@ -8,19 +8,28 @@ pygame.init()
     #level 
 
 def level():
-    global levelno,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,hole1x,hole1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d,dark_box,dark_boxx,dark_boxy
+    global levelno,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,hole1x,hole1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
 
     if levelno == 1:
         hole1x= 35
         hole1y = 100
+
         main_window.blit(hole1,(hole1y,hole1x))
+
         main_window.blit(ball1,(ball1y , ball1x))
         main_window.blit(ball2,(ball2y , ball2x))
-        dark_boxx = 35
-        dark_boxy = 100
-        darkboxrect = pygame.Rect(dark_boxy,dark_boxx,64,64)
-        main_window.blit(dark_box,(dark_boxy,dark_boxx))
-    
+
+        box = pygame.Rect(100,35,64,64)
+        main_window.blit(dark_box,(100,35))
+       
+        box1 = pygame.Rect(100,100,64,64)
+        main_window.blit(dark_box,(100,100))
+
+        light_boxx = 100
+        light_boxy = 500
+        lbox = pygame.Rect(light_boxy,light_boxx,64,64)
+        main_window.blit(light_box,(light_boxy,light_boxx))
+
 #################################################################################################
     
     if leftpress == True:
@@ -43,9 +52,12 @@ def level():
 
     # no escap from border :)
 
-    if pygame.Rect.colliderect(ball1rect,darkboxrect):
+    if pygame.Rect.colliderect(ball1rect,box) or pygame.Rect.colliderect(ball1rect,box1):
         velocityy *= -1
         velocityx *= -1
+    if pygame.Rect.colliderect(ball2rect,lbox):
+        velocity2y *= -1
+        velocity2x *= -1
     
     if ball1rect.right >= width/2 or ball1rect.left <= 0:
         velocityy *= -1
@@ -131,12 +143,6 @@ velocitymulti = 0.0
 hole1x = 0.0
 hole1y = 0.0
 
-dark_boxx = 0.0
-dark_boxy = 0.0
-
-light_boxx = 0.0
-light_boxy = 0.0
-
 # loading textures :(
 
 main_window = pygame.display.set_mode((screensize))
@@ -156,12 +162,10 @@ hole1 = pygame.transform.scale(hole1,(25,25))
 
 dark_box = pygame.image.load('res/gif/tile64_dark.png')
 dark_box = pygame.transform.scale(dark_box,(64,64))
-darkboxrect = pygame.Rect(dark_boxy,dark_boxx,64,64)
-
 
 light_box = pygame.image.load('res/gif/tile64_light.png')
 light_box = pygame.transform.scale(light_box,(64,64))
-lightboxrect = pygame.Rect(light_boxy,light_boxx,64,64)
+
 
 
 
