@@ -3,24 +3,31 @@ import math
 
 pygame.init()
 
+box = pygame.Rect(50,200,64,64)
 # some more functions 
 
     #level 
 
 def level():
-    global levelno,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,hole1x,hole1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
+    global levelno,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
 
     if levelno == 1:
         hole1x= 35
         hole1y = 100
+        hole2y = 500
+        hole2x = 35
 
-        main_window.blit(hole1,(hole1y,hole1x))
+        main_window.blit(hole,(hole1y,hole1x))
+        main_window.blit(hole,(hole2y,hole2x))
+        if showball1:
+            main_window.blit(ball1,(ball1y , ball1x))
+        if showball2:
+            main_window.blit(ball2,(ball2y , ball2x))
+        if showball1 == False and showball2 == False:
+            levelno += 1
 
-        main_window.blit(ball1,(ball1y , ball1x))
-        main_window.blit(ball2,(ball2y , ball2x))
-
-        box = pygame.Rect(100,35,64,64)
-        main_window.blit(dark_box,(100,35))
+        box = pygame.Rect(50,200,64,64)
+        main_window.blit(dark_box,(50,200))
        
         box1 = pygame.Rect(100,100,64,64)
         main_window.blit(dark_box,(100,100))
@@ -30,6 +37,12 @@ def level():
         lbox = pygame.Rect(light_boxy,light_boxx,64,64)
         main_window.blit(light_box,(light_boxy,light_boxx))
 
+        if (ball1x + 2 > hole1x and ball1x + 16 < hole1x + 20 and ball1y + 4 > hole1y and ball1y + 16 < hole1y+20):
+            showball1 = False
+        if (ball2x + 2 > hole2x and ball2x + 16 < hole2x + 20 and ball2y + 4 > hole2y and ball2y + 16 < hole2y+20):
+            showball2 = False
+    elif levelno == 2:
+        print("waaaaaaaaaaaaaaaaaaa")
 #################################################################################################
     
     if leftpress == True:
@@ -86,8 +99,7 @@ def events():
             
             if event.button == 1:
                 leftpress = True
-                initmousepossy,initmousepossx = pygame.mouse.get_pos()
-                print ("left click")        
+                initmousepossy,initmousepossx = pygame.mouse.get_pos()       
         if event.type == pygame.MOUSEBUTTONUP:
             
             if event.button == 1:
@@ -117,7 +129,11 @@ width = 800.0
 hight = 600.0
 screensize = (width,hight)
 
+win = False
 levelno = 1
+
+showball1 = True
+showball2 = True
 
 
 ball1x = 500.0
@@ -130,7 +146,6 @@ initmousepossy = 0.0
 mousepossx = 0.0
 mousepossy = 0.0
 
-
 leftpress = False
 
 velocityx = 0.0
@@ -139,9 +154,6 @@ velocity2x = 0.0
 velocity2y = 0.0
 velocity1d = 0.0 
 velocitymulti = 0.0
-
-hole1x = 0.0
-hole1y = 0.0
 
 # loading textures :(
 
@@ -157,8 +169,8 @@ ball2 = pygame.image.load('res/gif/golf-ball.png')
 ball2 = pygame.transform.scale(ball2,(20,20))
 ball2rect = pygame.Rect(0,0,20,20)
 
-hole1 = pygame.image.load('res/gif/hole.png')
-hole1 = pygame.transform.scale(hole1,(25,25))
+hole = pygame.image.load('res/gif/hole.png')
+hole = pygame.transform.scale(hole,(25,25))
 
 dark_box = pygame.image.load('res/gif/tile64_dark.png')
 dark_box = pygame.transform.scale(dark_box,(64,64))
@@ -166,7 +178,9 @@ dark_box = pygame.transform.scale(dark_box,(64,64))
 light_box = pygame.image.load('res/gif/tile64_light.png')
 light_box = pygame.transform.scale(light_box,(64,64))
 
-
+pygame.display.set_caption("Mini-Golf")
+icon = pygame.image.load('res/gif/icon.png')
+pygame.display.set_icon(icon)
 
 
 # main game function :)
