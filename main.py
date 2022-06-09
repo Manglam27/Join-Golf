@@ -3,19 +3,24 @@ import math
 
 pygame.init()
 
-box = pygame.Rect(50,200,64,64)
+box = pygame.Rect
+box1 = pygame.Rect
+lbox = pygame.Rect
 # some more functions 
 
     #level 
 
 def level():
-    global levelno,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
+    global levelno,lbox,box1,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
+
 
     if levelno == 1:
-        hole1x= 35
-        hole1y = 100
-        hole2y = 500
+        text = font.render( str("Level 1"), True ,(255,255,255),None)
+        main_window.blit(text,(350,0))
+        hole1x = 35
+        hole1y = 180
         hole2x = 35
+        hole2y = 580
 
         main_window.blit(hole,(hole1y,hole1x))
         main_window.blit(hole,(hole2y,hole2x))
@@ -25,6 +30,12 @@ def level():
             main_window.blit(ball2,(ball2y , ball2x))
         if showball1 == False and showball2 == False:
             levelno += 1
+            ball1x = 500.0
+            ball1y = 200.0
+            ball2x = 500.0
+            ball2y = 600.0
+            showball1 = True
+            showball2 = True
 
         box = pygame.Rect(50,200,64,64)
         main_window.blit(dark_box,(50,200))
@@ -37,12 +48,59 @@ def level():
         lbox = pygame.Rect(light_boxy,light_boxx,64,64)
         main_window.blit(light_box,(light_boxy,light_boxx))
 
-        if (ball1x + 2 > hole1x and ball1x + 16 < hole1x + 20 and ball1y + 4 > hole1y and ball1y + 16 < hole1y+20):
+        if (ball1x + 2 > hole1x and ball1x + 11 < hole1x + 25 and ball1y + 6 > hole1y and ball1y + 11 < hole1y+20):
             showball1 = False
-        if (ball2x + 2 > hole2x and ball2x + 16 < hole2x + 20 and ball2y + 4 > hole2y and ball2y + 16 < hole2y+20):
+        if (ball2x + 2 > hole2x and ball2x + 11 < hole2x + 25 and ball2y + 6 > hole2y and ball2y + 11 < hole2y+20):
             showball2 = False
     elif levelno == 2:
-        print("waaaaaaaaaaaaaaaaaaa")
+        text = font.render( str("Level 2"), True , (255,255,255),None)
+        main_window.blit(text,(350,0))
+        hole1x = 50
+        hole1y = 100
+        hole2x = 200
+        hole2y = 500
+
+        main_window.blit(hole,(hole1y,hole1x))
+        main_window.blit(hole,(hole2y,hole2x))
+        if showball1:
+            main_window.blit(ball1,(ball1y , ball1x))
+        if showball2:
+            main_window.blit(ball2,(ball2y , ball2x))
+        if showball1 == False and showball2 == False:
+            levelno += 1
+            ball1x = 500.0
+            ball1y = 200.0
+            ball2x = 500.0
+            ball2y = 600.0
+            
+        box = pygame.Rect(50,100,64,64)
+        main_window.blit(dark_box,(50,100))
+       
+        box1 = pygame.Rect(100,200,64,64)
+        main_window.blit(dark_box,(100,200))
+
+        light_boxx = 100
+        light_boxy = 700
+        lbox = pygame.Rect(light_boxy,light_boxx,64,64)
+        main_window.blit(light_box,(light_boxy,light_boxx))
+
+        if (ball1x + 2 > hole1x and ball1x + 11 < hole1x + 25 and ball1y + 6 > hole1y and ball1y + 11 < hole1y+20):
+            showball1 = False
+        if (ball2x + 2 > hole2x and ball2x + 11 < hole2x + 25 and ball2y + 6 > hole2y and ball2y + 11 < hole2y+20):
+            showball2 = False
+    
+    else:
+        txt = font.render( str("Game Over :)"), True , (0,0,0),None)
+        text = font.render( str("you have finished game in : "), True , (0,0,0),None)
+        text2 = font.render( str(clk), True , (255,0,0),None)
+        text3 = font.render( str("Moves "), True , (0,0,0),None)
+        main_window.blit(bg2,(0.0,0.0))
+        main_window.blit(txt,(280,100))
+        main_window.blit(text,(100,240))
+        main_window.blit(text2,(540,240))
+        main_window.blit(text3,(595,240))
+        
+
 #################################################################################################
     
     if leftpress == True:
@@ -87,7 +145,7 @@ def level():
     #events
 
 def events():
-    global windowup ,leftpress,initmousepossy,initmousepossx,mousepossy,mousepossx,velocity1d,velocity2x,velocity2y,velocityy,velocityx
+    global windowup ,clk,leftpress,initmousepossy,initmousepossx,mousepossy,mousepossx,velocity1d,velocity2x,velocity2y,velocityy,velocityx
 
     for event in pygame.event.get():
 
@@ -110,6 +168,7 @@ def events():
                 velocity2y = velocityy
                 leftpress = False
                 velocity1d = math.sqrt(pow(abs(velocityx),2)+pow(abs(velocityy),2))
+                clk += 1 
     
     #main game loop :>
 def main():
@@ -137,9 +196,9 @@ showball2 = True
 
 
 ball1x = 500.0
-ball1y = 200.0
+ball1y = 180.0
 ball2x = 500.0
-ball2y = 600.0
+ball2y = 580.0
 
 initmousepossx = 0.0
 initmousepossy = 0.0
@@ -147,6 +206,7 @@ mousepossx = 0.0
 mousepossy = 0.0
 
 leftpress = False
+clk = 0
 
 velocityx = 0.0
 velocityy = 0.0
@@ -158,8 +218,13 @@ velocitymulti = 0.0
 # loading textures :(
 
 main_window = pygame.display.set_mode((screensize))
+
+font = pygame.font.Font('freesansbold.ttf', 32)
+
 bg = pygame.image.load('res/gif/bg.png')
 bg = pygame.transform.scale(bg,(screensize))
+bg2 = pygame.image.load('res/gif/bg2.png')
+bg2 = pygame.transform.scale(bg2,(screensize))
 
 ball1 = pygame.image.load('res/gif/golf-ball.png')
 ball1 = pygame.transform.scale(ball1,(20,20))
