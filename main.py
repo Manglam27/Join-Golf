@@ -73,11 +73,18 @@ pygame.display.set_caption("Mini-Golf")
 icon = pygame.image.load('res/gif/icon.png')
 pygame.display.set_icon(icon)
 
+point =pygame.image.load('res/gif/point.png')
+
+
+
 #loading music
+
 holesound = mixer.Sound('res/sfx/hole.wav')
 movingsound = mixer.Sound('res/sfx/swing.wav')
 
 
+
+angle = 0.0
 
 box = pygame.Rect
 box1 = pygame.Rect
@@ -89,7 +96,7 @@ lbox = pygame.Rect
     #level 
 
 def level():
-    global levelno,lbox,box1,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
+    global levelno,angle,lbox,box1,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
 
 
     if levelno == 1:
@@ -120,6 +127,10 @@ def level():
             ball1y = 200.0
             ball2x = 500.0
             ball2y = 600.0
+            velocityy = 0
+            velocityx = 0
+            velocity2y = 0
+            velocity2x = 0
             showball1 = True
             showball2 = True
 
@@ -154,8 +165,14 @@ def level():
         main_window.blit(hole,(hole2y,hole2x))
         if showball1:
             main_window.blit(ball1,(ball1y , ball1x))
+        else:
+            ball1x = 0.0
+            ball1y = 0.0   
         if showball2:
             main_window.blit(ball2,(ball2y , ball2x))
+        else:
+            ball2x = 0.0
+            ball2y = 0.0
         if showball1 == False and showball2 == False:
             levelno += 1
             ball1x = 500.0
@@ -195,7 +212,17 @@ def level():
         
 
 #################################################################################################
-    
+
+    if (leftpress == True):
+            point2 = pygame.transform.rotate(point,180)
+
+            if ( showball1 == True):
+                main_window.blit(point2,(ball1y+3,ball1x-35))
+            if (showball2 == True):
+                main_window.blit(point2,(ball2y,ball2x))
+            
+
+
     if leftpress == True:
         if velocitymulti < 5:
             velocitymulti += .1
@@ -240,7 +267,7 @@ def level():
     #events
 
 def events():
-    global windowup ,clk,leftpress,initmousepossy,initmousepossx,mousepossy,mousepossx,velocity1d,velocity2x,velocity2y,velocityy,velocityx
+    global windowup ,angle,clk,leftpress,initmousepossy,initmousepossx,mousepossy,mousepossx,velocity1d,velocity2x,velocity2y,velocityy,velocityx
 
     for event in pygame.event.get():
 
@@ -258,12 +285,16 @@ def events():
             if event.button == 1:
                 mousepossy,mousepossx = pygame.mouse.get_pos()
                 velocityx = (initmousepossx-mousepossx)/-50
+                a = initmousepossx-mousepossx
                 velocityy = (initmousepossy-mousepossy)/-50
+                b = initmousepossy-mousepossy
                 velocity2x = velocityx
                 velocity2y = velocityy
                 leftpress = False
                 velocity1d = math.sqrt(pow(abs(velocityx),2)+pow(abs(velocityy),2))
                 movingsound.play()
+
+                angle = math.atan2(a,b)
 
                 clk += 1 
     
