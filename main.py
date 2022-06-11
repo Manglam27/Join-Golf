@@ -2,6 +2,7 @@ import pygame
 from pygame import KEYDOWN, mixer
 import math
 
+
 pygame.init()
 pygame.mixer.init()
 
@@ -91,13 +92,14 @@ box1 = pygame.Rect
 lbox = pygame.Rect
 
 arraybox = []
+arraybox2 = []
 
 # some more functions 
 
     #level 
 
 def level():
-    global initmousepossy,initmousepossx,levelno,hole1y,hole2x,hole2y,hole1x,lbox,box1,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d,windowup
+    global arraybox,arraybox2,initmousepossy,initmousepossx,levelno,hole1y,hole2x,hole2y,hole1x,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
 
 
     if levelno == 1:
@@ -120,6 +122,7 @@ def level():
 
         if showball1 == False and showball2 == False:
             levelno += 1
+            arraybox.clear()
             ball1x = 500.0
             ball1y = 200.0
             ball2x = 500.0
@@ -135,15 +138,16 @@ def level():
             hole2x = 200
             hole2y = 500
 
-        box = pygame.Rect(50,200,64,64)
+        arraybox.append(pygame.Rect(50,200,64,64))
         main_window.blit(dark_box,(50,200))
        
-        box1 = pygame.Rect(100,100,64,64)
+        arraybox.append(pygame.Rect(100,100,64,64))
         main_window.blit(dark_box,(100,100))
 
         light_boxx = 100
         light_boxy = 500
-        lbox = pygame.Rect(light_boxy,light_boxx,64,64)
+
+        arraybox2.append(light_boxy,light_boxx,64,64)
         main_window.blit(light_box,(light_boxy,light_boxx))
 
     elif levelno == 2:
@@ -176,10 +180,10 @@ def level():
             showball1 = True
             showball2 = True
 
-        box = pygame.Rect(50,100,64,64)
+        arraybox.appand(pygame.Rect(50,100,64,64))
         main_window.blit(dark_box,(50,100))
        
-        box1 = pygame.Rect(100,200,64,64)
+        arraybox.append (pygame.Rect(100,200,64,64))
         main_window.blit(dark_box,(100,200))
 
         light_boxx = 100
@@ -235,9 +239,13 @@ def level():
 
     # no escap from border :)
 
-    if pygame.Rect.colliderect(ball1rect,box) or pygame.Rect.colliderect(ball1rect,box1):
+    # if pygame.Rect.colliderect(ball1rect,box) or pygame.Rect.colliderect(ball1rect,box1):
+    #     velocityy *= -1
+    #     velocityx *= -1
+    if pygame.Rect.colliderect(ball1rect,arraybox[0]) or pygame.Rect.colliderect(ball1rect,arraybox[1]):
         velocityy *= -1
         velocityx *= -1
+
     if pygame.Rect.colliderect(ball2rect,lbox):
         velocity2y *= -1
         velocity2x *= -1
