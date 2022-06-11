@@ -6,6 +6,7 @@ import math
 pygame.init()
 pygame.mixer.init()
 
+
 #Global variables
 windowup = True
 
@@ -86,20 +87,22 @@ point =pygame.image.load('res/gif/point.png')
 holesound = mixer.Sound('res/sfx/hole.wav')
 movingsound = mixer.Sound('res/sfx/swing.wav')
 
+#loding font
 
-box = pygame.Rect
-box1 = pygame.Rect
-lbox = pygame.Rect
+myfont = pygame.font.Font('res/font/ComicNeue-Bold.ttf',30)
+
 
 arraybox = []
 arraybox2 = []
+boxno = 0
+box2no = 0
 
 # some more functions 
 
     #level 
 
 def level():
-    global arraybox,arraybox2,initmousepossy,initmousepossx,levelno,hole1y,hole2x,hole2y,hole1x,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
+    global arraybox,box2no,boxno,arraybox2,initmousepossy,initmousepossx,levelno,hole1y,hole2x,hole2y,hole1x,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
 
 
     if levelno == 1:
@@ -120,8 +123,23 @@ def level():
             ball2x = 0.0
             ball2y = 0.0
 
+
+        arraybox.append(pygame.Rect(50,200,64,64))
+        main_window.blit(dark_box,(50,200))
+       
+        arraybox.append(pygame.Rect(100,100,64,64))
+        main_window.blit(dark_box,(100,100))
+
+        arraybox2.append(pygame.Rect(500,100,64,64))
+        main_window.blit(light_box,(500,100))
+
+        boxno = 2
+        box2no = 1
+
         if showball1 == False and showball2 == False:
             levelno += 1
+            boxno = 0
+            box2no = 0
             arraybox.clear()
             ball1x = 500.0
             ball1y = 200.0
@@ -137,18 +155,6 @@ def level():
             hole1y = 100
             hole2x = 200
             hole2y = 500
-
-        arraybox.append(pygame.Rect(50,200,64,64))
-        main_window.blit(dark_box,(50,200))
-       
-        arraybox.append(pygame.Rect(100,100,64,64))
-        main_window.blit(dark_box,(100,100))
-
-        light_boxx = 100
-        light_boxy = 500
-
-        arraybox2.append(light_boxy,light_boxx,64,64)
-        main_window.blit(light_box,(light_boxy,light_boxx))
 
     elif levelno == 2:
         text = font.render( str("Level 2"), True , (255,255,255),None)
@@ -167,6 +173,19 @@ def level():
         else:
             ball2x = 0.0
             ball2y = 0.0
+
+        arraybox.append(pygame.Rect(50,100,64,64))
+        main_window.blit(dark_box,(50,100))
+       
+        arraybox.append(pygame.Rect(100,200,64,64))
+        main_window.blit(dark_box,(100,200))
+
+        arraybox2.append(pygame.Rect(700,100,64,64))
+        main_window.blit(light_box,(700,100))
+
+        boxno = 2
+        box2no = 1
+        
         if showball1 == False and showball2 == False:
             levelno += 1
             ball1x = 00.0
@@ -179,17 +198,6 @@ def level():
             velocity2x = 0
             showball1 = True
             showball2 = True
-
-        arraybox.appand(pygame.Rect(50,100,64,64))
-        main_window.blit(dark_box,(50,100))
-       
-        arraybox.append (pygame.Rect(100,200,64,64))
-        main_window.blit(dark_box,(100,200))
-
-        light_boxx = 100
-        light_boxy = 700
-        lbox = pygame.Rect(light_boxy,light_boxx,64,64)
-        main_window.blit(light_box,(light_boxy,light_boxx))
     
     else:
         end()
@@ -242,13 +250,14 @@ def level():
     # if pygame.Rect.colliderect(ball1rect,box) or pygame.Rect.colliderect(ball1rect,box1):
     #     velocityy *= -1
     #     velocityx *= -1
-    if pygame.Rect.colliderect(ball1rect,arraybox[0]) or pygame.Rect.colliderect(ball1rect,arraybox[1]):
-        velocityy *= -1
-        velocityx *= -1
-
-    if pygame.Rect.colliderect(ball2rect,lbox):
-        velocity2y *= -1
-        velocity2x *= -1
+    for i in range(boxno):
+        if pygame.Rect.colliderect(ball1rect,arraybox[i]):
+            velocityy *= -1
+            velocityx *= -1
+    for i in range(box2no):
+        if pygame.Rect.colliderect(ball2rect,arraybox2[i]):
+            velocity2y *= -1
+            velocity2x *= -1
     
     if ball1rect.right >= width/2 or ball1rect.left <= 0:
         velocityy *= -1
@@ -303,7 +312,7 @@ def main():
         clock.tick(60)
 
 def end():
-    global clk
+    global clk,myfont
     up = True
     while up:
         for event in pygame.event.get():
@@ -313,17 +322,17 @@ def end():
             if event.type == KEYDOWN:
                 up = False 
                 pygame.quit()
-        txt = font.render( str("Game Over :)"), True , (0,0,0),None)
-        text = font.render( str("you have finished game in : "), True , (0,0,0),None)
-        text2 = font.render( str(clk), True , (255,0,0),None)
-        text3 = font.render( str("Moves "), True , (0,0,0),None)
-        text4 = font.render('Press any key to Exit',True,(0,0,0),None)
+        txt = myfont.render( str("Game Over :)"), True , (0,0,0),None)
+        text = myfont.render( str("you have finished game in : "), True , (0,0,0),None)
+        text2 = myfont.render( str(clk), True , (255,0,0),None)
+        text3 = myfont.render( str("Moves "), True , (0,0,0),None)
+        text4 = myfont.render('Press any key to Exit',True,(0,0,0),None)
         main_window.blit(bg2,(0.0,0.0))
         main_window.blit(txt,(280,100))
-        main_window.blit(text,(100,240))
-        main_window.blit(text2,(540,240))
-        main_window.blit(text3,(595,240))
-        main_window.blit(text4,(220,370))
+        main_window.blit(text,(150,240))
+        main_window.blit(text2,(520,240))
+        main_window.blit(text3,(565,240))
+        main_window.blit(text4,(240,370))
 
         pygame.display.flip()
         pygame.display.update()
@@ -338,5 +347,6 @@ while up:
         if event.type == pygame.QUIT:
             up = False
             pygame.quit()
+
     pygame.display.flip()
     pygame.display.update()
