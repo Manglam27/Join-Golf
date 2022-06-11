@@ -1,5 +1,5 @@
 import pygame
-from pygame import mixer
+from pygame import KEYDOWN, mixer
 import math
 
 pygame.init()
@@ -50,7 +50,6 @@ velocitymulti = 0.0
 
 main_window = pygame.display.set_mode((screensize))
 
-
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 bg = pygame.image.load('res/gif/bg.png')
@@ -75,7 +74,7 @@ dark_box = pygame.transform.scale(dark_box,(64,64))
 light_box = pygame.image.load('res/gif/tile64_light.png')
 light_box = pygame.transform.scale(light_box,(64,64))
 
-pygame.display.set_caption("Mini-Golf")
+pygame.display.set_caption("Join-Golf")
 icon = pygame.image.load('res/gif/icon.png')
 pygame.display.set_icon(icon)
 
@@ -91,6 +90,7 @@ box = pygame.Rect
 box1 = pygame.Rect
 lbox = pygame.Rect
 
+arraybox = []
 
 # some more functions 
 
@@ -103,10 +103,6 @@ def level():
     if levelno == 1:
         text = font.render( str("Level 1"), True ,(0,169,253),None)
         main_window.blit(text,(350,0))
-        # hole1x = 35
-        # hole1y = 180
-        # hole2x = 35
-        # hole2y = 580
 
         main_window.blit(hole,(hole1y,hole1x))
         main_window.blit(hole,(hole2y,hole2x))
@@ -153,8 +149,6 @@ def level():
     elif levelno == 2:
         text = font.render( str("Level 2"), True , (255,255,255),None)
         main_window.blit(text,(350,0))
-        
-
 
         main_window.blit(hole,(hole1y,hole1x))
         main_window.blit(hole,(hole2y,hole2x))
@@ -194,23 +188,7 @@ def level():
         main_window.blit(light_box,(light_boxy,light_boxx))
     
     else:
-        txt = font.render( str("Game Over :)"), True , (0,0,0),None)
-        text = font.render( str("you have finished game in : "), True , (0,0,0),None)
-        text2 = font.render( str(clk), True , (255,0,0),None)
-        text3 = font.render( str("Moves "), True , (0,0,0),None)
-        text4 = font.render('Press any key to Exit',True,(0,0,0),None)
-        main_window.blit(bg2,(0.0,0.0))
-        main_window.blit(txt,(280,100))
-        main_window.blit(text,(100,240))
-        main_window.blit(text2,(540,240))
-        main_window.blit(text3,(595,240))
-        main_window.blit(text4,(220,370))
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                windowup = False
-                pygame.quit()
-
-        
+        end()
 
 #################################################################################################
 
@@ -228,8 +206,6 @@ def level():
             mousepossy,mousepossx = pygame.mouse.get_pos()
             angle = math.atan2(initmousepossy-mousepossy,mousepossx-initmousepossx)*180 / math.pi
             point2 = pygame.transform.rotate(point,-1*(angle))
-            # point.set_colorkey((0,0,0))
-            print(angle)
             if ( showball1 == True):
                 main_window.blit(point2,((ball1y+10)-int(point2.get_width()/2),(ball1x+10)-int(point2.get_height()/2)))
             if (showball2 == True):
@@ -308,14 +284,51 @@ def events():
                 clk += 1 
     
     #main game loop :>
+up = True
 def main():
     while windowup:
         main_window.blit(bg,(0.0,0.0))
         events()
         level()
         pygame.display.flip()
+        pygame.display.update()
         clock.tick(60)
 
+def end():
+    global clk
+    up = True
+    while up:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                up = False
+                pygame.quit()
+            if event.type == KEYDOWN:
+                up = False 
+                pygame.quit()
+        txt = font.render( str("Game Over :)"), True , (0,0,0),None)
+        text = font.render( str("you have finished game in : "), True , (0,0,0),None)
+        text2 = font.render( str(clk), True , (255,0,0),None)
+        text3 = font.render( str("Moves "), True , (0,0,0),None)
+        text4 = font.render('Press any key to Exit',True,(0,0,0),None)
+        main_window.blit(bg2,(0.0,0.0))
+        main_window.blit(txt,(280,100))
+        main_window.blit(text,(100,240))
+        main_window.blit(text2,(540,240))
+        main_window.blit(text3,(595,240))
+        main_window.blit(text4,(220,370))
+
+        pygame.display.flip()
+        pygame.display.update()
 # main game function :)
 
-main()
+while up:
+    main_window.blit(bg,(0,0))
+    for event in pygame.event.get():
+        if event.type == KEYDOWN:
+            up = False
+            main()
+        if event.type == pygame.QUIT:
+            up = False
+            pygame.quit()
+    pygame.display.flip()
+    pygame.display.update()
