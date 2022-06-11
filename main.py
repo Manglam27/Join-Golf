@@ -26,6 +26,11 @@ ball1y = 180.0
 ball2x = 500.0
 ball2y = 580.0
 
+hole1x = 35
+hole1y = 180
+hole2x = 35
+hole2y = 580
+
 initmousepossx = 0.0
 initmousepossy = 0.0
 mousepossx = 0.0
@@ -75,16 +80,11 @@ pygame.display.set_icon(icon)
 
 point =pygame.image.load('res/gif/point.png')
 
-
-
 #loading music
 
 holesound = mixer.Sound('res/sfx/hole.wav')
 movingsound = mixer.Sound('res/sfx/swing.wav')
 
-
-
-angle = 0.0
 
 box = pygame.Rect
 box1 = pygame.Rect
@@ -96,16 +96,17 @@ lbox = pygame.Rect
     #level 
 
 def level():
-    global levelno,angle,lbox,box1,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
-
+    global initmousepossy,initmousepossx,levelno,hole1y,hole2x,hole2y,hole1x,lbox,box1,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
+    
+    
 
     if levelno == 1:
         text = font.render( str("Level 1"), True ,(255,255,255),None)
         main_window.blit(text,(350,0))
-        hole1x = 35
-        hole1y = 180
-        hole2x = 35
-        hole2y = 580
+        # hole1x = 35
+        # hole1y = 180
+        # hole2x = 35
+        # hole2y = 580
 
         main_window.blit(hole,(hole1y,hole1x))
         main_window.blit(hole,(hole2y,hole2x))
@@ -133,6 +134,10 @@ def level():
             velocity2x = 0
             showball1 = True
             showball2 = True
+            hole1x = 50
+            hole1y = 100
+            hole2x = 200
+            hole2y = 500
 
         box = pygame.Rect(50,200,64,64)
         main_window.blit(dark_box,(50,200))
@@ -145,24 +150,15 @@ def level():
         lbox = pygame.Rect(light_boxy,light_boxx,64,64)
         main_window.blit(light_box,(light_boxy,light_boxx))
 
-        if (ball1x + 2 > hole1x and ball1x + 11 < hole1x + 25 and ball1y + 6 > hole1y and ball1y + 11 < hole1y+20):
-            showball1 = False
-            holesound.play()
-
-        if (ball2x + 2 > hole2x and ball2x + 11 < hole2x + 25 and ball2y + 6 > hole2y and ball2y + 11 < hole2y+20):
-            showball2 = False
-            holesound.play()
-
     elif levelno == 2:
         text = font.render( str("Level 2"), True , (255,255,255),None)
         main_window.blit(text,(350,0))
-        hole1x = 50
-        hole1y = 100
-        hole2x = 200
-        hole2y = 500
+        
+
 
         main_window.blit(hole,(hole1y,hole1x))
         main_window.blit(hole,(hole2y,hole2x))
+
         if showball1:
             main_window.blit(ball1,(ball1y , ball1x))
         else:
@@ -175,11 +171,17 @@ def level():
             ball2y = 0.0
         if showball1 == False and showball2 == False:
             levelno += 1
-            ball1x = 500.0
-            ball1y = 200.0
-            ball2x = 500.0
-            ball2y = 600.0
-            
+            ball1x = 00.0
+            ball1y = 00.0
+            ball2x = 00.0
+            ball2y = 00.0
+            velocityy = 0
+            velocityx = 0
+            velocity2y = 0
+            velocity2x = 0
+            showball1 = True
+            showball2 = True
+
         box = pygame.Rect(50,100,64,64)
         main_window.blit(dark_box,(50,100))
        
@@ -190,14 +192,6 @@ def level():
         light_boxy = 700
         lbox = pygame.Rect(light_boxy,light_boxx,64,64)
         main_window.blit(light_box,(light_boxy,light_boxx))
-
-        if (ball1x + 2 > hole1x and ball1x + 11 < hole1x + 25 and ball1y + 6 > hole1y and ball1y + 11 < hole1y+20):
-            showball1 = False
-            holesound.play()
-
-        if (ball2x + 2 > hole2x and ball2x + 11 < hole2x + 25 and ball2y + 6 > hole2y and ball2y + 11 < hole2y+20):
-            showball2 = False
-            holesound.play()
     
     else:
         txt = font.render( str("Game Over :)"), True , (0,0,0),None)
@@ -213,19 +207,32 @@ def level():
 
 #################################################################################################
 
-    if (leftpress == True):
-            point2 = pygame.transform.rotate(point,180)
 
+    if (ball1x + 2 > hole1x and ball1x + 11 < hole1x + 25 and ball1y + 6 > hole1y and ball1y + 11 < hole1y+20):
+        showball1 = False
+        holesound.play()
+
+    if (ball2x + 2 > hole2x and ball2x + 11 < hole2x + 25 and ball2y + 6 > hole2y and ball2y + 11 < hole2y+20):
+        showball2 = False
+        holesound.play()
+
+
+    if (leftpress == True):
+            mousepossy,mousepossx = pygame.mouse.get_pos()
+            angle = math.atan2(initmousepossy-mousepossy,mousepossx-initmousepossx)*180 / math.pi
+            point2 = pygame.transform.rotate(point,-1*(angle))
+            # point.set_colorkey((0,0,0))
+            print(angle)
             if ( showball1 == True):
-                main_window.blit(point2,(ball1y+3,ball1x-35))
+                main_window.blit(point2,((ball1y+10)-int(point2.get_width()/2),(ball1x+10)-int(point2.get_height()/2)))
             if (showball2 == True):
-                main_window.blit(point2,(ball2y,ball2x))
+                main_window.blit(point2,((ball2y+10)-int(point2.get_width()/2),(ball2x+10)-int(point2.get_height()/2)))
             
 
 
     if leftpress == True:
         if velocitymulti < 5:
-            velocitymulti += .1
+            velocitymulti += .5
     if(velocity1d>0): 
         velocity1d -= .1
         ball1y += (velocitymulti*(-velocityy))
@@ -267,7 +274,7 @@ def level():
     #events
 
 def events():
-    global windowup ,angle,clk,leftpress,initmousepossy,initmousepossx,mousepossy,mousepossx,velocity1d,velocity2x,velocity2y,velocityy,velocityx
+    global windowup ,a,b,angle,clk,leftpress,initmousepossy,initmousepossx,mousepossy,mousepossx,velocity1d,velocity2x,velocity2y,velocityy,velocityx
 
     for event in pygame.event.get():
 
@@ -284,18 +291,15 @@ def events():
             
             if event.button == 1:
                 mousepossy,mousepossx = pygame.mouse.get_pos()
-                velocityx = (initmousepossx-mousepossx)/-50
-                a = initmousepossx-mousepossx
-                velocityy = (initmousepossy-mousepossy)/-50
-                b = initmousepossy-mousepossy
+                velocityx = (initmousepossx-mousepossx)/-150
+                a = (initmousepossx-mousepossx)
+                velocityy = (initmousepossy-mousepossy)/-150
+                b = (initmousepossy-mousepossy)
                 velocity2x = velocityx
                 velocity2y = velocityy
                 leftpress = False
                 velocity1d = math.sqrt(pow(abs(velocityx),2)+pow(abs(velocityy),2))
                 movingsound.play()
-
-                angle = math.atan2(a,b)
-
                 clk += 1 
     
     #main game loop :>
