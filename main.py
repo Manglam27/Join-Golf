@@ -50,6 +50,7 @@ velocitymulti = 0.0
 
 main_window = pygame.display.set_mode((screensize))
 
+
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 bg = pygame.image.load('res/gif/bg.png')
@@ -96,12 +97,11 @@ lbox = pygame.Rect
     #level 
 
 def level():
-    global initmousepossy,initmousepossx,levelno,hole1y,hole2x,hole2y,hole1x,lbox,box1,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d
-    
-    
+    global initmousepossy,initmousepossx,levelno,hole1y,hole2x,hole2y,hole1x,lbox,box1,box,showball1,showball2,ball1rect,ball2rect,ball2y,ball2x,leftpress,ball1x,ball1y,velocity2y,velocity2x,velocityx,velocityy,velocitymulti,velocity1d,windowup
+
 
     if levelno == 1:
-        text = font.render( str("Level 1"), True ,(255,255,255),None)
+        text = font.render( str("Level 1"), True ,(0,169,253),None)
         main_window.blit(text,(350,0))
         # hole1x = 35
         # hole1y = 180
@@ -198,11 +198,18 @@ def level():
         text = font.render( str("you have finished game in : "), True , (0,0,0),None)
         text2 = font.render( str(clk), True , (255,0,0),None)
         text3 = font.render( str("Moves "), True , (0,0,0),None)
+        text4 = font.render('Press any key to Exit',True,(0,0,0),None)
         main_window.blit(bg2,(0.0,0.0))
         main_window.blit(txt,(280,100))
         main_window.blit(text,(100,240))
         main_window.blit(text2,(540,240))
         main_window.blit(text3,(595,240))
+        main_window.blit(text4,(220,370))
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                windowup = False
+                pygame.quit()
+
         
 
 #################################################################################################
@@ -274,7 +281,7 @@ def level():
     #events
 
 def events():
-    global windowup ,a,b,angle,clk,leftpress,initmousepossy,initmousepossx,mousepossy,mousepossx,velocity1d,velocity2x,velocity2y,velocityy,velocityx
+    global windowup,clk,leftpress,initmousepossy,initmousepossx,mousepossy,mousepossx,velocity1d,velocity2x,velocity2y,velocityy,velocityx
 
     for event in pygame.event.get():
 
@@ -292,9 +299,7 @@ def events():
             if event.button == 1:
                 mousepossy,mousepossx = pygame.mouse.get_pos()
                 velocityx = (initmousepossx-mousepossx)/-150
-                a = (initmousepossx-mousepossx)
                 velocityy = (initmousepossy-mousepossy)/-150
-                b = (initmousepossy-mousepossy)
                 velocity2x = velocityx
                 velocity2y = velocityy
                 leftpress = False
@@ -310,8 +315,6 @@ def main():
         level()
         pygame.display.flip()
         clock.tick(60)
-
-
 
 # main game function :)
 
