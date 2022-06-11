@@ -48,12 +48,19 @@ velocity2y = 0.0
 velocity1d = 0.0
 velocitymulti = 0.0
 
+arraybox = []
+arraybox2 = []
+boxno = 0
+box2no = 0
+
 # loading textures :(
 
 main_window = pygame.display.set_mode((screensize))
 
 font = pygame.font.Font('freesansbold.ttf', 32)
 
+start = pygame.image.load('res/gif/start.png')
+start = pygame.transform.scale(start, (screensize))
 bg = pygame.image.load('res/gif/bg.png')
 bg = pygame.transform.scale(bg, (screensize))
 bg2 = pygame.image.load('res/gif/bg2.png')
@@ -82,6 +89,10 @@ pygame.display.set_icon(icon)
 
 point = pygame.image.load('res/gif/point.png')
 
+powermeterbg = pygame.image.load('res/gif/powermeter_bg.png')
+powermeterfg = pygame.image.load('res/gif/powermeter_fg.png')
+powermeterover = pygame.image.load('res/gif/powermeter_overlay.png')
+
 # loading music
 
 holesound = mixer.Sound('res/sfx/hole.wav')
@@ -91,51 +102,46 @@ movingsound = mixer.Sound('res/sfx/swing.wav')
 
 myfont = pygame.font.Font('res/font/ComicNeue-Bold.ttf', 30)
 
-
-arraybox = []
-arraybox2 = []
-boxno = 0
-box2no = 0
-
+a = 0
 # some more functions
 
 # level
 
 
 def level():
-    global arraybox, box2no, boxno, arraybox2, initmousepossy, initmousepossx, levelno, hole1y, hole2x, hole2y, hole1x, showball1, showball2, ball1rect, ball2rect, ball2y, ball2x, leftpress, ball1x, ball1y, velocity2y, velocity2x, velocityx, velocityy, velocitymulti, velocity1d
+    global a,powermeterfg,arraybox, box2no, boxno, arraybox2, initmousepossy, initmousepossx, levelno, hole1y, hole2x, hole2y, hole1x, showball1, showball2, ball1rect, ball2rect, ball2y, ball2x, leftpress, ball1x, ball1y, velocity2y, velocity2x, velocityx, velocityy, velocitymulti, velocity1d
 
     if levelno == 1:
-        text = font.render( str("Level 1"), True ,(0,0,0),None)
-        main_window.blit(text,(350,0))
+        text = font.render(str("Level 1"), True, (0, 0, 0), None)
+        main_window.blit(text, (350, 0))
 
-        main_window.blit(hole,(hole1y,hole1x))
-        main_window.blit(hole,(hole2y,hole2x))
+        main_window.blit(hole, (hole1y, hole1x))
+        main_window.blit(hole, (hole2y, hole2x))
         if showball1:
-            main_window.blit(ball1,(ball1y , ball1x))
+            main_window.blit(ball1, (ball1y, ball1x))
         else:
             ball1x = 0.0
             ball1y = 0.0
 
         if showball2:
-            main_window.blit(ball2,(ball2y , ball2x))
+            main_window.blit(ball2, (ball2y, ball2x))
         else:
             ball2x = 0.0
             ball2y = 0.0
 
-        arraybox.append(pygame.Rect(1,250,64,64))
-        main_window.blit(dark_box,(1,250))
-        arraybox.append(pygame.Rect(68,250,64,64))
-        main_window.blit(dark_box,(68,250))
-        arraybox.append(pygame.Rect(336,250,64,64))
-        main_window.blit(dark_box,(336,250))
-        arraybox.append(pygame.Rect(270,250,64,64))
-        main_window.blit(dark_box,(270,250))
+        arraybox.append(pygame.Rect(1, 250, 64, 64))
+        main_window.blit(dark_box, (1, 250))
+        arraybox.append(pygame.Rect(68, 250, 64, 64))
+        main_window.blit(dark_box, (68, 250))
+        arraybox.append(pygame.Rect(336, 250, 64, 64))
+        main_window.blit(dark_box, (336, 250))
+        arraybox.append(pygame.Rect(270, 250, 64, 64))
+        main_window.blit(dark_box, (270, 250))
 
-        arraybox2.append(pygame.Rect(530,150,64,64))
-        main_window.blit(light_box,(530,150))
-        arraybox2.append(pygame.Rect(596,150,64,64))
-        main_window.blit(light_box,(596,150))
+        arraybox2.append(pygame.Rect(530, 150, 64, 64))
+        main_window.blit(light_box, (530, 150))
+        arraybox2.append(pygame.Rect(596, 150, 64, 64))
+        main_window.blit(light_box, (596, 150))
 
         boxno = 4
         box2no = 2
@@ -162,7 +168,7 @@ def level():
             hole2y = 500
 
     elif levelno == 2:
-        text = font.render(str("Level 2"), True, (0,0,0), None)
+        text = font.render(str("Level 2"), True, (0, 0, 0), None)
         main_window.blit(text, (350, 0))
 
         main_window.blit(hole, (hole1y, hole1x))
@@ -249,26 +255,26 @@ def level():
         boxno = 2
         box2no = 2
 
-    if showball1 == False and showball2 == False:
-        levelno += 1
-        boxno = 0
-        box2no = 0
-        arraybox.clear()
-        arraybox2.clear()
-        ball1x = 100.0
-        ball1y = 200.0
-        ball2x = 100.0
-        ball2y = 600.0
-        velocityy = 0
-        velocityx = 0
-        velocity2y = 0
-        velocity2x = 0
-        showball1 = True
-        showball2 = True
-        hole1x = 500
-        hole1y = 200
-        hole2x = 500
-        hole2y = 600
+        if showball1 == False and showball2 == False:
+            levelno += 1
+            boxno = 0
+            box2no = 0
+            arraybox.clear()
+            arraybox2.clear()
+            ball1x = 100.0
+            ball1y = 200.0
+            ball2x = 100.0
+            ball2y = 600.0
+            velocityy = 0
+            velocityx = 0
+            velocity2y = 0
+            velocity2x = 0
+            showball1 = True
+            showball2 = True
+            hole1x = 500
+            hole1y = 200
+            hole2x = 500
+            hole2y = 600
 
     elif levelno == 4:
         text = font.render(str("Level 4"), True, (0, 0, 0), None)
@@ -341,8 +347,6 @@ def level():
             hole1y = 300
             hole2x = 500
             hole2y = 500
-
-            
 
     elif levelno == 5:
         text = font.render(str("Level 5"), True, (0, 0, 0), None)
@@ -417,21 +421,34 @@ def level():
         showball2 = False
         holesound.play()
 
+
     if (leftpress == True):
+        
+        if velocitymulti < 7:
+            velocitymulti += .12
+            a+=1
+            powermeterfg = pygame.transform.scale(powermeterfg,(8,a))
+
+        print(velocitymulti)
         mousepossy, mousepossx = pygame.mouse.get_pos()
         angle = math.atan2(initmousepossy-mousepossy,
                            mousepossx-initmousepossx)*180 / math.pi
         point2 = pygame.transform.rotate(point, -1*(angle))
-        if (showball1 == True):
-            main_window.blit(point2, ((
-                ball1y+10)-int(point2.get_width()/2), (ball1x+10)-int(point2.get_height()/2)))
-        if (showball2 == True):
-            main_window.blit(point2, ((
-                ball2y+10)-int(point2.get_width()/2), (ball2x+10)-int(point2.get_height()/2)))
 
-    if leftpress == True:
-        if velocitymulti < 5:
-            velocitymulti += .5
+        if (showball1 == True):
+            main_window.blit(powermeterbg,(ball1y+40,ball1x-60))
+            main_window.blit(powermeterfg,(ball1y+42,ball1x-57))        
+            main_window.blit(powermeterover,(ball1y+40,ball1x-60))        
+            main_window.blit(point2, ((ball1y+10)-int(point2.get_width()/2), (ball1x+10)-int(point2.get_height()/2)))
+
+
+        if (showball2 == True):
+            main_window.blit(powermeterbg,(ball2y+40,ball2x-60))
+            main_window.blit(powermeterfg,(ball2y+42,ball2x-57))        
+            main_window.blit(powermeterover,(ball2y+40,ball2x-60)) 
+
+            main_window.blit(point2, ((ball2y+10)-int(point2.get_width()/2), (ball2x+10)-int(point2.get_height()/2)))
+        
     if(velocity1d > 0):
         velocity1d -= .1
         ball1y += (velocitymulti*(-velocityy))
@@ -447,8 +464,9 @@ def level():
         if velocity1d < 0:
 
             velocitymulti = 0.0
+            a=0
 
-    # no escap from border :)
+    # no escap 
 
     for i in range(boxno):
         if pygame.Rect.colliderect(ball1rect, arraybox[i]):
@@ -544,7 +562,7 @@ def end():
 
 
 while up:
-    main_window.blit(bg, (0, 0))
+    main_window.blit(start, (0, 0))
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             up = False
