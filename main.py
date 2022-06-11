@@ -429,7 +429,6 @@ def level():
             a+=1
             powermeterfg = pygame.transform.scale(powermeterfg,(8,a))
 
-        print(velocitymulti)
         mousepossy, mousepossx = pygame.mouse.get_pos()
         angle = math.atan2(initmousepossy-mousepossy,
                            mousepossx-initmousepossx)*180 / math.pi
