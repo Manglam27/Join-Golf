@@ -1,5 +1,5 @@
-# Join-Golf
-A Mini golf game using pygame 
+# **Join-Golf**
+A Mini golf game using Python's library pygame
 
 ---
 
@@ -47,5 +47,5 @@ I have given 100% of effort to develop this,but there are still minor bugs in th
 * I'm diploma Student
 
 
-####some fun facts :
-	* My higest score is 58 clk let's see what's your score :>
+#### some fun facts :
+* My higest score is 58 clk let's see what's your score :>
